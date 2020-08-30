@@ -11,4 +11,4 @@ class Item(models.Model):
     price = models.FloatField(null=True, blank=True)
     description = models.CharField(max_length=250, null=True)
     barcode = models.CharField(max_length=250, null=True)
-    type = models.ForeignKey(DrugType, null=True, blank=True, on_delete=models.SET_NULL)
+    type = models.ForeignKey(DrugType, null=True, blank=True, on_delete=models.SET_NULL)  # Drug type
