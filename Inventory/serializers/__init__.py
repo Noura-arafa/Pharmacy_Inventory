@@ -1,0 +1,1 @@
+from .drug_type_serializer import DrugTypeSerializer
