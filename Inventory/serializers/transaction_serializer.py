@@ -6,7 +6,7 @@ from Inventory.serializers import ItemMinimizedSerializer
 
 class TransactionSerializer(serializers.ModelSerializer):
     item = ItemMinimizedSerializer(read_only=True, required=False)
-    item_id = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all, source='item')
+    item_id = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all(), source='item')
 
     class Meta:
         model = Transaction

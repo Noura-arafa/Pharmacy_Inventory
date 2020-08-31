@@ -9,6 +9,7 @@ from Inventory.serializers import ItemSerializer
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
 
     def get_queryset(self):
