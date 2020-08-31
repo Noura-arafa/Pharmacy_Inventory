@@ -10,8 +10,9 @@ class DrugTypeViewSet(viewsets.ModelViewSet):
     queryset = DrugType.objects.all()
     pagination_class = PageNumberPagination
     search_fields = ('type',)
+    filterset_fields = ['type']
     serializer_class = DrugTypeSerializer
 
-    # def get_queryset(self):
-    #     print('geeeeeeer')
-    #     pagination.PageNumberPagination.page_size = self.request.query_params.get('size')
+    def get_queryset(self):
+        pagination.PageNumberPagination.page_size = self.request.query_params.get('size')
+        return DrugType.objects.all()
