@@ -12,7 +12,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = ['id',
                   'quantity',
-                  'transaction_data',
+                  'transaction_date',
                   'transaction_type',
                   'item',
                   'item_id']

@@ -1,26 +1,37 @@
-import django_filters
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, filters, pagination, status
+from rest_framework import viewsets, pagination, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_filters.backends import DjangoFilterBackend
+import rest_framework_filters as filters
 
 from Inventory.models import Transaction, Stock
 from Inventory.serializers import TransactionSerializer
+
+
+class TransactionFilter(filters.FilterSet):
+    class Meta:
+        model = Transaction
+        fields = {
+            'transaction_type': ('exact',),
+            'item__name': ('exact',),
+            'quantity': ('exact',),
+            'transaction_date': ('exact',),
+        }
 
 
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filter_class = TransactionFilter
+    pagination_class = PageNumberPagination
 
-    # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    # # search_fields = ('quantity', 'transaction_data', 'transaction_type',)
-    # # filterset_fields = ['quantity', 'transaction_data', 'transaction_type', 'item__name']
-
-    # def get_queryset(self):
-    #     pagination.PageNumberPagination.page_size = self.request.query_params.get('size')
-    #     return Transaction.objects.all()
+    def get_queryset(self):
+        pagination.PageNumberPagination.page_size = self.request.query_params.get('size')
+        return Transaction.objects.all()
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -41,4 +52,3 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
