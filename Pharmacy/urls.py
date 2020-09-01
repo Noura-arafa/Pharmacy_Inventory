@@ -18,6 +18,7 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     url('admin/', admin.site.urls),
+    url(r'^auth/', include('rest_auth.urls', namespace='REST Auth')),
     url(r'^store/', include(('Inventory.urls', 'Inventory'), namespace='Inventory')),
 
 ]

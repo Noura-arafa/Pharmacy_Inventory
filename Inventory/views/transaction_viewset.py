@@ -2,6 +2,7 @@ import django_filters
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, filters, pagination, status
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from Inventory.models import Transaction, Stock
@@ -11,6 +12,7 @@ from Inventory.serializers import TransactionSerializer
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
+    permission_classes = [IsAuthenticated]
 
     # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     # # search_fields = ('quantity', 'transaction_data', 'transaction_type',)
