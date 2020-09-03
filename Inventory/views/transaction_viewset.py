@@ -38,9 +38,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         # Calculate stock quantity
-        print(serializer.validated_data['item'].id)
-        # item_stock = get_object_or_404(Stock, pk=serializer.validated_data['item'].id)
-        item_stock = Stock.objects.filter(id=serializer.validated_data['item'].id)
+        item_stock = Stock.objects.filter(item_id=serializer.validated_data['item'].id)
         if not item_stock and serializer.validated_data['transaction_type'] == 1:
             Stock.objects.create(item_id=serializer.validated_data['item'].id,
                                  quantity=serializer.validated_data['quantity'])
@@ -49,8 +47,8 @@ class TransactionViewSet(viewsets.ModelViewSet):
             if serializer.validated_data['transaction_type'] == 1:
                 item_stock.quantity += serializer.validated_data['quantity']
             else:
-                if item_stock.quantity == 0:
-                    return Response('out of stock', status=status.HTTP_200_OK)
+                if not item_stock or item_stock.quantity == 0:
+                    return Response(data='out of stock', status=status.HTTP_200_OK)
                 item_stock.quantity -= serializer.validated_data['quantity']
 
             item_stock.save()
