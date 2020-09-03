@@ -24,8 +24,11 @@ SECRET_KEY = '8!si5e%^1w)s%y3t4wtbf(2$of2e3z$xi1l%30pv=_@oe4@tc$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_REPLACE_HTTPS_REFERER = True
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'six',
+    'corsheaders',
     'Inventory.apps.InventoryConfig',
 ]
 REST_FRAMEWORK = {
@@ -47,6 +51,11 @@ REST_FRAMEWORK = {
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
@@ -70,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'Pharmacy.urls'
