@@ -15,7 +15,7 @@ class TransactionFilter(filters.FilterSet):
         model = Transaction
         fields = {
             'transaction_type': ('exact',),
-            'item__name': ('exact',),
+            'item__name': ('exact', 'icontains'),
             'quantity': ('exact',),
             'transaction_date': ('exact',),
         }
